@@ -2,6 +2,12 @@
 #
 # Hardware: ESP32-S3-WROOM-1-N8R8, SSD1683 e-paper 400x300
 # https://www.elecrow.com/wiki/CrowPanel_ESP32_E-paper_4.2-inch_HMI_Display.html
+external_components:
+  - source:
+      type: local
+      path: components
+    components: [crowpanel_epaper]
+
 esphome:
   name: ${node_name}
   friendly_name: ${friendly_node_name}
@@ -27,6 +33,48 @@ switch:
     restore_mode: ALWAYS_ON
     internal: true
 
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: 2
+      mode: INPUT_PULLUP
+      inverted: true
+    id: btn_menu
+    filters:
+      - delayed_on: 20ms
+  - platform: gpio
+    pin:
+      number: 1
+      mode: INPUT_PULLUP
+      inverted: true
+    id: btn_exit
+    filters:
+      - delayed_on: 20ms
+  - platform: gpio
+    pin:
+      number: 5
+      mode: INPUT_PULLUP
+      inverted: true
+    id: btn_confirm
+    filters:
+      - delayed_on: 20ms
+  - platform: gpio
+    pin:
+      number: 6
+      mode: INPUT_PULLUP
+      inverted: true
+    id: btn_rotary_up
+    filters:
+      - delayed_on: 20ms
+  - platform: gpio
+    pin:
+      number: 4
+      mode: INPUT_PULLUP
+      inverted: true
+    id: btn_rotary_down
+    filters:
+      - delayed_on: 20ms
+
 display:
   - platform: crowpanel_epaper
     id: epd
@@ -38,7 +86,6 @@ display:
     reset_pin: 47
     busy_pin: 48
     invert_colors: true
-    rotation: 180
     full_update_every: 9999
     auto_clear_enabled: false
     update_interval: never
